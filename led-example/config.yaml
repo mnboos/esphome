@@ -1,0 +1,44 @@
+esphome:
+    name: led-example
+    
+esp32:
+    board: esp-wrover-kit
+    framework:
+        type: esp-idf
+        #type: arduino
+        
+            
+external_components:
+  # use ble_client_hid from this master branch in GitHub
+  - source: github://fsievers22/esphome-ble-remote@master
+    components: [ ble_client_hid ]
+
+# Enable Home Assistant API
+api:
+
+  # Enable logging
+logger:    
+
+ota:
+    - platform: esphome
+#      password: "Supersecret-Ota-Password"
+
+wifi:
+    ssid: !secret wifi_ssid
+    password: !secret wifi_pw
+    fast_connect: on
+
+
+
+output:
+  - platform: ledc
+    pin: GPIO4
+    id: led_output
+    frequency: 1000 Hz    # PWM frequency
+    
+# Light component with brightness control
+light:
+  - platform: monochromatic  # Changed from binary to monochromatic
+    name: "ESP32 LED"
+    output: led_output
+    default_transition_length: 0.5s  # Smooth brightness transitions

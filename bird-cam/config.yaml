@@ -11,10 +11,11 @@ esp32:
 
 # Enable Home Assistant API
 api:
-
+mdns:
+  disabled: false
 wifi:
-    ssid: "Obsthalde"
-    password: "Obsthalde8-8588-123!"
+    ssid: !secret wifi_ssid
+    password: !secret wifi_pw
     fast_connect: on
 
     # Enable logging
@@ -44,9 +45,10 @@ esp32_camera:
     pixel_clock_pin: GPIO22
     power_down_pin: GPIO32
     resolution: 800x600
-    jpeg_quality: 10  # max. 63
+    jpeg_quality: 25  # max. 63
     max_framerate: 30.0fps
-    idle_framerate: 0.2fps
+    idle_framerate: 0.1fps
+    frame_buffer_count: 2
     vertical_flip: true
     horizontal_mirror: false
     brightness: 2 # -2 to 2
@@ -54,7 +56,7 @@ esp32_camera:
     special_effect: none
     # exposure settings
     aec_mode: auto
-    aec2: false
+    aec2: true
     ae_level: 0
     aec_value: 300
     # gain settings
@@ -63,33 +65,38 @@ esp32_camera:
     agc_value: 0
     # white balance setting
     wb_mode: auto
+    
 output:
-    # white LED
+    # IR led
     - platform: ledc
-      channel: 2
-      pin: GPIO4
-      id: espCamLED
+      pin: GPIO2
+      id: ir_led1
+      frequency: 1000 Hz    # PWM frequency
+    
     # red status light
     - platform: gpio
       pin:
           number: GPIO33
           inverted: True
-      id: gpio_33
+      id: status_light
+      
 light:
     - platform: monochromatic
-      output: espCamLED
-      name: esp-cam light
+      output: ir_led1
+      name: IR-Licht 1
     - platform: binary
-      output: gpio_33
+      output: status_light
       name: esp-cam led
+      
 switch:
     - platform: restart
       name: esp-cam restart
+      
 binary_sensor:
     - platform: status
       name: esp-cam status
 
 # Example configuration entry
-esp32_camera_web_server:
-  - port: 8080
-    mode: stream
+#esp32_camera_web_server:
+#  - port: 8080
+#    mode: stream

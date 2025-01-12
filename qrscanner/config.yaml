@@ -1,0 +1,71 @@
+esphome:
+    name: qrscanner
+    includes:
+        - uart_read_line_sensor.h
+
+esp32:
+    board: esp32dev
+    framework:
+        type: esp-idf
+        #type: arduino
+
+
+
+# Enable Home Assistant API
+api:
+
+wifi:
+    ssid: !secret wifi_ssid
+    password: !secret wifi_pw
+    fast_connect: on
+
+    # Enable logging
+logger:
+    level: VERBOSE
+    tx_buffer_size: 256
+
+ota:
+    platform: esphome
+
+# Enable Web server
+#web_server:
+#    port: 80
+
+# Button configuration (built-in button on GPIO 39)
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: 39
+      inverted: true
+    name: "Atom Button"
+    id: atom_button
+    on_press:
+      then:
+        - output.turn_on: trigger_pin
+    on_release:
+      then:
+        - output.turn_off: trigger_pin
+
+# Trigger pin output
+output:
+  - platform: gpio
+    pin: 23
+    id: trigger_pin
+    inverted: true  # Because we want LOW to trigger scanning
+
+# UART configuration for QR scanner
+uart:
+  tx_pin: 19
+  rx_pin: 22
+  baud_rate: 9600
+  id: uart_bus
+
+# Custom text sensor for QR data
+text_sensor:
+  - platform: custom
+    lambda: |-
+      auto qr_sensor = new UartReadLineSensor(id(uart_bus));
+      App.register_component(qr_sensor);
+      return {qr_sensor};
+    text_sensors:
+      name: "QR Code Value"

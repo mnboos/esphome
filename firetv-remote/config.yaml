@@ -36,6 +36,8 @@ ota:
 esp32_ble_tracker:
 
 ble_client:
+  - mac_address: "7C:A4:49:2D:8C:11"
+    id: phone_martin
   - mac_address: "A4:08:01:71:EC:9B"  # firestick remote control
     id: firetv_remote
     # auto_connect: true    
@@ -47,7 +49,11 @@ ble_client:
       # then:
         # - lambda: |-
             # ESP_LOGD("ble_client_lambda", "Disconnected from BLE device");
-    
+
+#media_player:
+#  - platform: esp-a2dp
+#    name: "ESP32 Media Player"
+
 ble_client_hid:
   - id: firetv_remote_hid
     ble_client_id: firetv_remote

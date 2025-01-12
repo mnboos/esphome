@@ -1,17 +1,10 @@
-[tool.poetry]
-name = "fire_remote_esphome"
+[project]
+name = "esphome-iot"
 version = "0.1.0"
-description = ""
-authors = ["Martin Boos <mboos@outlook.com>"]
+description = "Add your description here"
 readme = "README.md"
-package-mode = false
-
-[tool.poetry.dependencies]
-python = "^3.12"
-esphome = "^2024.10.0"
-setuptools = "^75.2.0"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.12"
+dependencies = [
+    "esphome>=2024.12.2",
+    "setuptools>=75.6.0",
+]
