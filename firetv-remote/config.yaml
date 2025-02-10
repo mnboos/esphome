@@ -22,8 +22,11 @@ wifi:
     fast_connect: on
 
   # Enable logging
-logger:
+#logger:
     
+time:
+  - platform: sntp
+    id: sntp_time
 
 ota:
     - platform: esphome
@@ -31,16 +34,14 @@ ota:
 
   # Enable Web server
 #web_server:
-#    port: 80
+#   port: 80
 
 esp32_ble_tracker:
 
 ble_client:
-  - mac_address: "7C:A4:49:2D:8C:11"
-    id: phone_martin
   - mac_address: "A4:08:01:71:EC:9B"  # firestick remote control
     id: firetv_remote
-    # auto_connect: true    
+    #auto_connect: true
     # on_connect:
       # then:
         # - lambda: |-
@@ -50,25 +51,18 @@ ble_client:
         # - lambda: |-
             # ESP_LOGD("ble_client_lambda", "Disconnected from BLE device");
 
-#media_player:
-#  - platform: esp-a2dp
-#    name: "ESP32 Media Player"
+
+bluetooth_proxy:
+  active: true
 
 ble_client_hid:
   - id: firetv_remote_hid
     ble_client_id: firetv_remote
 
 sensor:
-  # - platform: ble_client_hid
-    # type: battery
-    # ble_client_hid_id: firetv_remote_hid
-    # name: "Battery"
-  # - platform: ble_client_hid
-    # type: last_event_value
-    # ble_client_hid_id: firetv_remote_hid
-    # name: "Last Event Value"
+   - platform: ble_client_hid
+     type: battery
+     ble_client_hid_id: firetv_remote_hid
+     name: "Battery"
 
 text_sensor:
-  # - platform: ble_client_hid
-    # ble_client_hid_id: firetv_remote_hid
-    # name: "Last Event Usage"
