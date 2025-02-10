@@ -63,9 +63,16 @@ uart:
 # Custom text sensor for QR data
 text_sensor:
   - platform: custom
+    id: last_code_scan
     lambda: |-
       auto qr_sensor = new UartReadLineSensor(id(uart_bus));
       App.register_component(qr_sensor);
       return {qr_sensor};
     text_sensors:
       name: "QR Code Value"
+      on_value:
+        then:
+            - homeassistant.event:
+                  event: esphome.qrscanner
+                  data:
+                    message: Code was scanned! hello world!
