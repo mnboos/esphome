@@ -1,0 +1,72 @@
+esphome:
+    name: ble-connector
+    
+esp32:
+    board: esp32dev
+    framework:
+        type: esp-idf
+        #type: arduino
+        
+            
+external_components:
+  # use ble_client_hid from this master branch in GitHub
+  - source: github://fsievers22/esphome-ble-remote@master
+    components: [ ble_client_hid ]
+
+# Enable Home Assistant API
+api:
+
+wifi:
+    ssid: !secret wifi_ssid
+    password: !secret wifi_pw
+    fast_connect: on
+
+  # Enable logging
+logger:
+    
+
+ota:
+    - platform: esphome
+#      password: "Supersecret-Ota-Password"
+
+  # Enable Web server
+#web_server:
+#    port: 80
+
+esp32_ble_tracker:
+
+ble_client:
+  - mac_address: "44:05:00:00:22:6F"  # led controller büro martin
+    id: sp632e
+    # auto_connect: true    
+    # on_connect:
+      # then:
+        # - lambda: |-
+            # ESP_LOGD("ble_client_lambda", "Connected to BLE device");
+    # on_disconnect:
+      # then:
+        # - lambda: |-
+            # ESP_LOGD("ble_client_lambda", "Disconnected from BLE device");
+
+#media_player:
+#  - platform: esp-a2dp
+#    name: "ESP32 Media Player"
+
+ble_client_hid:
+  - id: sp632e_hid
+    ble_client_id: sp632e
+
+sensor:
+  # - platform: ble_client_hid
+    # type: battery
+    # ble_client_hid_id: firetv_remote_hid
+    # name: "Battery"
+  # - platform: ble_client_hid
+    # type: last_event_value
+    # ble_client_hid_id: firetv_remote_hid
+    # name: "Last Event Value"
+
+text_sensor:
+  # - platform: ble_client_hid
+    # ble_client_hid_id: firetv_remote_hid
+    # name: "Last Event Usage"

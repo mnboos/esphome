@@ -1,0 +1,52 @@
+esphome:
+    name: ble-proxy
+    
+esp32:
+    board: esp32dev
+    framework:
+        type: esp-idf
+        #type: arduino
+        
+# Enable Home Assistant API
+api:
+
+wifi:
+    ssid: !secret wifi_ssid
+    password: !secret wifi_pw
+    fast_connect: on
+
+  # Enable logging
+logger:
+    
+
+ota:
+    - platform: esphome
+#      password: "Supersecret-Ota-Password"
+
+  # Enable Web server
+#web_server:
+#    port: 80
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 1100ms
+    window: 1100ms
+    active: true
+
+bluetooth_proxy:
+  active: true
+
+sensor:
+  # - platform: ble_client_hid
+    # type: battery
+    # ble_client_hid_id: firetv_remote_hid
+    # name: "Battery"
+  # - platform: ble_client_hid
+    # type: last_event_value
+    # ble_client_hid_id: firetv_remote_hid
+    # name: "Last Event Value"
+
+text_sensor:
+  # - platform: ble_client_hid
+    # ble_client_hid_id: firetv_remote_hid
+    # name: "Last Event Usage"
